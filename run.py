@@ -113,7 +113,7 @@ def post_record():
         }
     print(form_data)
 #сохраняем сгенерированные имена в файл
-    save_to_file_by_lines(str(form_data), "savedNames")
+    save_to_file_by_lines(str(form_data), "logs")
 #отправляем запрос
     response = requests.post(urlResponse, data=form_data, headers=user_agent)
     if response.status_code != 200:
