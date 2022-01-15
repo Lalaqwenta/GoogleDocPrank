@@ -126,12 +126,12 @@ def post_record():
         }
     print(form_data)
 #сохраняем сгенерированные имена в файл
-    save_to_file_by_lines(str(form_data), "logs")
+    save_to_file_by_lines(str(form_data), config.log_path + "logs")
 #отправляем запрос
     response = requests.post(urlResponse, data=form_data, headers=user_agent)
-    #if response.status_code != 200:
-    with codecs.open("error" + time.strftime("%Y%m%d%H%M%S") + ".html", "a", encoding='utf-8') as file:
-        file.write(response.text + '\n')
+    if response.status_code != 200:
+        with codecs.open(config.log_path + "error" + time.strftime("%Y%m%d-%H%M%S") + ".html", "a", encoding='utf-8') as file:
+            file.write(response.text + '\n')
 
 # Общие настройки
 pers = Person(locale=Locale.RU)
