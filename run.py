@@ -51,6 +51,21 @@ def save_to_file_by_lines(name, txt_file_name):
 def post_record():
 #имя
     name = pers.full_name()
+#Во что ты любишь играть
+    what_do_you_like_to_play = multi_select_option_from_file(maps + "whatDoYouLikeToPlay")
+#Какие проблемы вам встретились
+    what_problems_found = mono_select_option_from_file(maps + "whatProblemsYouFound", None
+#Какие проблемы вы решили
+    what_problems_solved = mono_select_option_from_file(maps + "whatProblemsYouSolved", None
+#На что ты любишь кататься (читаем из файлов)
+    what_type_of_rp = multi_select_option_from_file(maps + "whatTypeOfRPAreYou", "add_other")
+    what_type_of_rp_other = mono_select_option_from_file(maps + "whatTypeOfRPAreYou_other", None)
+#Откуда об этом узнал
+    where_did_you_learn = mono_select_option_from_file(maps + "whereDidYouLearnAboutLARP", "add_other")
+    where_did_you_learn_other = mono_select_option_from_file(maps + "whereDidYouLearnAboutLARP_other", None)
+#Как узнаешь про игры
+    with_whom_do_you_attend = multi_select_option_from_file(maps + "withWhomDoYouAttend", "add_other")
+    with_whom_do_you_attend_other = mono_select_option_from_file(maps + "withWhomDoYouAttend_other", None)
 #почта
     email = pers.email(domains=['mail.ru', 'yandex.ru', 'list.ru', 'gmail.com', 'bk.ru'])
 #Ты состоишь в каком-нибудь клубе или команде?
@@ -85,11 +100,20 @@ def post_record():
         'entry.206608746.other_option_response' : how_long_in_larp_other,
         'entry.1861355305' : how_many_games_attended,
         'entry.541429037' : nickname,
-        'emailAddress': email
+        'emailAddress': email,
+        "entry.1315330665" : where_did_you_learn, 
+        "entry.1315330665.other_option_response" : where_did_you_learn_other,
+        "entry.1741486870" : what_type_of_rp,
+        "entry.1741486870.other_option_response" : what_type_of_rp_other,
+        "entry.511178249"  : with_whom_do_you_attend,
+        "entry.511178249.other_option_response"  : with_whom_do_you_attend_other,
+        "entry.265185965"  : what_do_you_like_to_play,
+        "entry.650149429"  : what_problems_found,
+        "entry.1793078507" : what_problems_solved,
         }
     print(form_data)
 #сохраняем сгенерированные имена в файл
-    save_to_file_by_lines(str(form_data), "savedNames")
+    save_to_file_by_lines(str(form_data), "logs")
 #отправляем запрос
     response = requests.post(urlResponse, data=form_data, headers=user_agent)
     if response.status_code != 200:
@@ -105,7 +129,7 @@ user_agent = {'Referer':urlReferer,'User-Agent': config.user_agent}
 
 # в цикле
 def main():
-    for i in range(1, 3):
+    for i in range(1, 2):
         post_record()
         random.randint(600, 3600)
         time.sleep()
