@@ -106,7 +106,7 @@ def post_record():
         'entry.206608746'  : how_long_in_larp,
         'entry.206608746.other_option_response' : how_long_in_larp_other,
         'entry.1861355305' : how_many_games_attended,
-#        'entry.541429037'  : nickname,
+        'entry.541429037'  : nickname,
         "entry.1315330665" : where_did_you_learn,
         "entry.1315330665.other_option_response" : where_did_you_learn_other,
         "entry.1741486870" : what_type_of_rp,
@@ -124,7 +124,6 @@ def post_record():
         "entry.1418118175" : what_newbie,
         "entry.824422351"  : what_i_like
         }
-    print(form_data)
 #сохраняем сгенерированные имена в файл
     save_to_file_by_lines(str(form_data), config.log_path + "logs")
 #отправляем запрос
@@ -132,6 +131,8 @@ def post_record():
     if response.status_code != 200:
         with codecs.open(config.log_path + "error" + time.strftime("%Y%m%d-%H%M%S") + ".html", "a", encoding='utf-8') as file:
             file.write(response.text + '\n')
+        return False
+    else : return True
 
 # Общие настройки
 pers = Person(locale=Locale.RU)
@@ -143,8 +144,16 @@ user_agent = {'Referer':urlReferer,'User-Agent': config.user_agent}
 
 # в цикле
 def main():
-    for i in range(1, 2):
-        post_record()
-        time.sleep(random.randint(0, 1))
+    i = 0
+    while True:
+        if post_record() :
+            time.sleep(random.randint(0, 1))
+            i+=1
+            print(str(i) + "\n")
+        else :
+            return False
 
-main()
+if main() :
+    print ("All failed but I don't see where.")
+else :
+    print ("All failed as expected.")
