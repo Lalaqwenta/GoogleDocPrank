@@ -50,25 +50,44 @@ def save_to_file_by_lines(name, txt_file_name):
 def post_record():
 #имя
     name = pers.full_name()
-#почта
-    email = pers.email(domains=['mail.ru', 'yandex.ru', 'list.ru', 'gmail.com', 'bk.ru'])
-#возраст милф
-    milf_age = random.randint(30, 55)
-#что ты выигрывал (читаем из файлов)
-    what_did_you_win = multi_select_option_from_file(maps + "whatDidYouWin", "add_other")
-    what_did_you_win_other = mono_select_option_from_file(maps + "whatDidYouWin_other", 0)
-#кто твои друзья (читаем из файлов)
-    who_are_your_friends = mono_select_option_from_file(maps + "whoAreYourFriends", "add_other")
-    who_are_your_friends_other = mono_select_option_from_file(maps + "whoAreYourFriends_other", 0)
+#Во что ты любишь играть
+    what_do_you_like_to_play = multi_select_option_from_file(maps + "whatDoYouLikeToPlay")
+#Какие проблемы вам встретились
+    what_problems_found = mono_select_option_from_file(maps + "whatProblemsYouFound", None
+#Какие проблемы вы решили
+    what_problems_solved = mono_select_option_from_file(maps + "whatProblemsYouSolved", None
+#На что ты любишь кататься (читаем из файлов)
+    what_type_of_rp = multi_select_option_from_file(maps + "whatTypeOfRPAreYou", "add_other")
+    what_type_of_rp_other = mono_select_option_from_file(maps + "whatTypeOfRPAreYou_other", None)
+#Откуда об этом узнал
+    where_did_you_learn = mono_select_option_from_file(maps + "whereDidYouLearnAboutLARP", "add_other")
+    where_did_you_learn_other = mono_select_option_from_file(maps + "whereDidYouLearnAboutLARP_other", None)
+#Как узнаешь про игры
+    with_whom_do_you_attend = multi_select_option_from_file(maps + "withWhomDoYouAttend", "add_other")
+    with_whom_do_you_attend_other = mono_select_option_from_file(maps + "withWhomDoYouAttend_other", None)
 #формируем json
     form_data = {
-        'entry.2014055157': name,
-        'entry.496536405': what_did_you_win,
-        'entry.496536405.other_option_response': what_did_you_win_other,
-        'entry.457997219': who_are_your_friends,
-        'entry.457997219.other_option_response': who_are_your_friends_other,
-        'entry.825455790': milf_age,
-        'emailAddress': email}
+        "entry.206608746"  : 
+        "entry.541429037"  : 
+        "entry.1949553758" : 
+        "entry.1861355305" : 
+        "entry.1772746954" : 
+        "entry.56781382"   : 
+        "entry.1418118175" : 
+        "entry.824422351"  : 
+        "entry.1226550788" : 
+        "entry.1315330665" : where_did_you_learn, 
+        "entry.1315330665.other_option_response" : where_did_you_learn_other,
+        "entry.522066257"  : 
+        "entry.1741486870" : what_type_of_rp,
+        "entry.1741486870.other_option_response" : what_type_of_rp_other,
+        "entry.511178249"  : with_whom_do_you_attend,
+        "entry.511178249.other_option_response"  : with_whom_do_you_attend_other,
+        "entry.265185965"  : what_do_you_like_to_play,
+        "entry.650149429"  : what_problems_found,
+        "entry.1793078507" : what_problems_solved,
+        "entry.337047416"  : 
+    }
     print(form_data)
 #сохраняем сгенерированные имена в файл
     save_to_file_by_lines(name, "savedNames")
@@ -87,7 +106,7 @@ user_agent = {'Referer':urlReferer,'User-Agent': config.user_agent}
 
 # в цикле
 def main():
-    for i in range(1, 11):
+    for i in range(1, 2):
         post_record()
 
 main()
