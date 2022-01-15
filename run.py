@@ -6,7 +6,7 @@
 #"entry.56781382"   : "КАК_ЛУЧШЕ_ОТВЕТ"                     Текст
 #"entry.1418118175" : "ЧТО_ПОЛЕЗНО_ЗНАТЬ_ОТВЕТ"             Текст
 #"entry.824422351"  : "ЧТО_НРАВИТСЯ_ОТВЕТ"                  Текст
-#"entry.1226550788" : "Да"                                  Выбор одного ответа
+#"entry.1226550788" : "ты состоишь в каком клубе"           Выбор одного ответа
 #"entry.1315330665" : "Пригласил знакомый"                  Выбор одного ответа
 #"entry.522066257"  : "Делаю всё своими руками!"            Выбор одного ответа
 #"entry.1741486870" : "Тысячники"                           Выбор нескольких ответов
@@ -22,6 +22,7 @@ from mimesis import Person
 from mimesis.locales import Locale
 import random
 import codecs
+import time
 
 #вытаскивает случайное кол-во вариантов из ткст файла
 #и добавим __other_option__ в конец списка, если other_flag = add_other
@@ -52,26 +53,43 @@ def post_record():
     name = pers.full_name()
 #почта
     email = pers.email(domains=['mail.ru', 'yandex.ru', 'list.ru', 'gmail.com', 'bk.ru'])
-#возраст милф
-    milf_age = random.randint(30, 55)
-#что ты выигрывал (читаем из файлов)
-    what_did_you_win = multi_select_option_from_file(maps + "whatDidYouWin", "add_other")
-    what_did_you_win_other = mono_select_option_from_file(maps + "whatDidYouWin_other", 0)
-#кто твои друзья (читаем из файлов)
-    who_are_your_friends = mono_select_option_from_file(maps + "whoAreYourFriends", "add_other")
-    who_are_your_friends_other = mono_select_option_from_file(maps + "whoAreYourFriends_other", 0)
+#Ты состоишь в каком-нибудь клубе или команде?
+    are_you_in_club = mono_select_option_from_file(maps + "areYouInClub", "add_other")
+    are_you_in_club_other = mono_select_option_from_file(maps + "areYouInClub_other", 0)
+#Название клуба в котором состоишь
+    club_name = mono_select_option_from_file(maps + "clubNames", 0)
+#Как решил эти проблемы
+    how_did_you_solve = multi_select_option_from_file(maps + "howDidYouSolve", "add_other")
+    how_did_you_solve_other = mono_select_option_from_file(maps + "howDidYouSolve_other", 0)
+#Как обрастаешь снарягой
+    how_do_you_get_stuff = mono_select_option_from_file(maps + "howDoYouGetStuff", "add_other")
+    how_do_you_get_stuff_other = mono_select_option_from_file(maps + "howDoYouGetStuff_other", 0)
+#Как давно в РД
+    how_long_in_larp = mono_select_option_from_file(maps + "howLongInLARP", "add_other")
+    how_long_in_larp_other = mono_select_option_from_file(maps + "howLongInLARP_other", 0)
+#Сколько игр посетил
+    how_many_games_attended = mono_select_option_from_file(maps + "howManyGamesAttended", 0)
+#Погоняло
+    nickname = mono_select_option_from_file(maps + "nicknames", 0)
+    nickname = random.choice([nickname, name])
 #формируем json
     form_data = {
-        'entry.2014055157': name,
-        'entry.496536405': what_did_you_win,
-        'entry.496536405.other_option_response': what_did_you_win_other,
-        'entry.457997219': who_are_your_friends,
-        'entry.457997219.other_option_response': who_are_your_friends_other,
-        'entry.825455790': milf_age,
-        'emailAddress': email}
+        'entry.1226550788' : are_you_in_club,
+        'entry.1226550788.other_option_response' : are_you_in_club_other,
+        'entry.1949553758' : club_name,
+        'entry.337047416' : how_did_you_solve,
+        'entry.337047416.other_option_response' : how_did_you_solve_other,
+        'entry.522066257' : how_do_you_get_stuff,
+        'entry.522066257.other_option_response' : how_do_you_get_stuff_other,
+        'entry.206608746' : how_long_in_larp,
+        'entry.206608746.other_option_response' : how_long_in_larp_other,
+        'entry.1861355305' : how_many_games_attended,
+        'entry.541429037' : nickname,
+        'emailAddress': email
+        }
     print(form_data)
 #сохраняем сгенерированные имена в файл
-    save_to_file_by_lines(name, "savedNames")
+    save_to_file_by_lines(str(form_data), "savedNames")
 #отправляем запрос
     response = requests.post(urlResponse, data=form_data, headers=user_agent)
     if response.status_code != 200:
@@ -87,7 +105,9 @@ user_agent = {'Referer':urlReferer,'User-Agent': config.user_agent}
 
 # в цикле
 def main():
-    for i in range(1, 11):
+    for i in range(1, 3):
         post_record()
+        random.randint(600, 3600)
+        time.sleep()
 
 main()
