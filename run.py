@@ -31,6 +31,7 @@ def multi_select_option_from_file (txt_file_name, other_flag):
         lines = txt_file.read().splitlines()
     ran_lines = random.sample(lines, random.randint(1, len(lines)))
     if other_flag == "add_other" :  list.append(ran_lines, '__other_option__')
+
     return ran_lines
 
 #вытаcкивает один случайный вариант из ткст файла
@@ -52,11 +53,14 @@ def post_record():
 #имя
     name = pers.full_name()
 #Во что ты любишь играть
-    what_do_you_like_to_play = multi_select_option_from_file(maps + "whatDoYouLikeToPlay", None)
+    what_do_you_like_to_play = multi_select_option_from_file(maps + "whatDoYouLikeToPlay", "add_other")
+    what_do_you_like_to_play_other = mono_select_option_from_file(maps + "whatDoYouLikeToPlay_other", None)
 #Какие проблемы вам встретились
-    what_problems_found = mono_select_option_from_file(maps + "whatProblemsYouFound", None)
+    what_problems_found = multi_select_option_from_file(maps + "whatProblemsYouFound", "add_other")
+    what_problems_found_other = mono_select_option_from_file(maps + "whatProblemsYouFound_other", None)
 #Какие проблемы вы решили
-    what_problems_solved = mono_select_option_from_file(maps + "whatProblemsYouSolved", None)
+    what_problems_solved = multi_select_option_from_file(maps + "whatProblemsYouSolved", "add_other")
+    what_problems_solved_other = mono_select_option_from_file(maps + "whatProblemsYouSolve_other", None)
 #На что ты любишь кататься (читаем из файлов)
     what_type_of_rp = multi_select_option_from_file(maps + "whatTypeOfRPAreYou", "add_other")
     what_type_of_rp_other = mono_select_option_from_file(maps + "whatTypeOfRPAreYou_other", None)
@@ -66,8 +70,6 @@ def post_record():
 #Как узнаешь про игры
     with_whom_do_you_attend = multi_select_option_from_file(maps + "withWhomDoYouAttend", "add_other")
     with_whom_do_you_attend_other = mono_select_option_from_file(maps + "withWhomDoYouAttend_other", None)
-#почта
-    email = pers.email(domains=['mail.ru', 'yandex.ru', 'list.ru', 'gmail.com', 'bk.ru'])
 #Ты состоишь в каком-нибудь клубе или команде?
     are_you_in_club = mono_select_option_from_file(maps + "areYouInClub", "add_other")
     are_you_in_club_other = mono_select_option_from_file(maps + "areYouInClub_other", None)
@@ -104,17 +106,19 @@ def post_record():
         'entry.206608746'  : how_long_in_larp,
         'entry.206608746.other_option_response' : how_long_in_larp_other,
         'entry.1861355305' : how_many_games_attended,
-        'entry.541429037'  : nickname,
-        'emailAddress'     : email,
-        "entry.1315330665" : where_did_you_learn, 
+#        'entry.541429037'  : nickname,
+        "entry.1315330665" : where_did_you_learn,
         "entry.1315330665.other_option_response" : where_did_you_learn_other,
         "entry.1741486870" : what_type_of_rp,
         "entry.1741486870.other_option_response" : what_type_of_rp_other,
         "entry.511178249"  : with_whom_do_you_attend,
         "entry.511178249.other_option_response"  : with_whom_do_you_attend_other,
         "entry.265185965"  : what_do_you_like_to_play,
+        "entry.265185965.other_option_response" : what_do_you_like_to_play_other,
         "entry.650149429"  : what_problems_found,
+        "entry.650149429.other_option_response"  : what_problems_found_other,
         "entry.1793078507" : what_problems_solved,
+        "entry.1793078507.other_option_response" : what_problems_solved_other,
         "entry.1772746954" : what_troubles,
         "entry.56781382"   : what_can_improve,
         "entry.1418118175" : what_newbie,
@@ -126,8 +130,8 @@ def post_record():
 #отправляем запрос
     response = requests.post(urlResponse, data=form_data, headers=user_agent)
     #if response.status_code != 200:
-        with codecs.open("error" + time.strftime("%Y.%m.%d-%H:%M:%S") + ".html", "a", encoding='utf-8') as file:
-          file.write(response.text + '\n')
+    with codecs.open("error" + time.strftime("%Y%m%d%H%M%S") + ".html", "a", encoding='utf-8') as file:
+        file.write(response.text + '\n')
 
 # Общие настройки
 pers = Person(locale=Locale.RU)
