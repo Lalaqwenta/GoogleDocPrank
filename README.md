@@ -6,4 +6,4 @@ Folder containing maps and dictionaries. Beware, these files are in Russian, as 
 ## main.py
 Script in python taking random phrases from maps, generating an HTTP request to google form to create record.
 ## Additional info
-For testing purposes we will be using following google form: https://forms.gle/iXt4hGiygrFF9pYc9
+For testing purposes we will be using following google form: https://forms.gle/iXt4hGiygrFF9pYc9. The results are here: https://docs.google.com/spreadsheets/d/13d2RDVZVWYIhTx1j6VhGV-rtBD8kiUBrwbegYL5f6bs/edit#gid=970527463.
